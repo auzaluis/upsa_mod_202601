@@ -47,17 +47,31 @@ df$`Escribe tu edad exacta` |>
 ## Imputación de datos (reemplazo por la media)
 round(mean(df$`Escribe tu edad exacta`, na.rm = TRUE))
 
+# Cálculo de la edad promedio
 edad_promedio <- df$`Escribe tu edad exacta` |>
   mean(na.rm = TRUE) |> 
   round()
 
 edad_promedio
 
+ifelse(
+  test = is.na(df$`Escribe tu edad exacta`),
+  yes = edad_promedio,
+  no = df$`Escribe tu edad exacta`
+)
 
+df2 <- df |>
+  mutate(
+    edad2 = ifelse(
+      test = is.na(df$`Escribe tu edad exacta`),
+      yes = edad_promedio,
+      no = df$`Escribe tu edad exacta`
+    )
+  ) |> 
+  relocate(edad2, .after = `Escribe tu edad exacta`)
 
-
-
-
+## Eliminar toda la fila
+df2 <- na.omit(df)
 
 
 
