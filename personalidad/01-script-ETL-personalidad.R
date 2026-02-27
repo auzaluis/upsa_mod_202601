@@ -93,6 +93,55 @@ df3 <- df3 |>
   mutate(edadR = `Escribe tu edad exacta` |> rescale()) |> 
   relocate(edadR, .after = `Escribe tu edad exacta`)
 
+## Agrupaciones ----
+### Rangos numéricos
+cut(
+  df3$`Escribe tu edad exacta`,
+  breaks = c(-Inf, 18, 21, Inf),
+  labels = c("18 o menos", "19 a 21", "Más de 21")
+)
+
+df4 <- df3 |>
+  mutate(
+    edadGR = cut(
+      df3$`Escribe tu edad exacta`,
+      breaks = c(-Inf, 18, 21, Inf),
+      labels = c("18 o menos", "19 a 21", "Más de 21")
+    )
+  ) |> 
+  relocate(edadGR, .after = `Escribe tu edad exacta`)
+
+df4$edadGR |> table() # Conteo
+df4$edadGR |> table() |> prop.table() # Porcentajes
+
+
+### Agrupaciones categóricas
+unique(df4$`Según tu forma de ser ¿Cuál de las siguientes frases te describe mejor: [No discrimino y trato a todos por igual]`)
+df4 |> colnames()
+df4[,8] |> unique()
+
+# ifelse (SI|NO)
+ifelse(
+  test = df4[,8] == "Totalmente verdadero" | df4[,8] == "Un poco verdadero",
+  yes = "SI",
+  no = "NO"
+)
+
+# Bucles (loops)
+## Paso1: crear una variable que contenga los nombres
+## de las columas a iterar
+frases <- df4 |> select(starts_with("Según tu")) |> colnames()
+
+## Ejecutar el bucle
+df5 <- df4
+
+for (frase in frases) {
+  df5[,frase] <- ifelse(
+    test = df4[,frase] == "Un poco verdadero" | df4[,frase] == "Totalmente verdadero",
+    yes = 1,
+    no = 0
+  )
+}
 
 
 
