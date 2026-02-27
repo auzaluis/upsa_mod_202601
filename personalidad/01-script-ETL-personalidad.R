@@ -3,7 +3,8 @@
 library(pacman)
 p_load(
   gsheet,
-  tidyverse
+  tidyverse,
+  scales
 )
 
 # Tema 01: Carga de datos ----
@@ -72,6 +73,32 @@ df2 <- df |>
 
 ## Eliminar toda la fila
 df2 <- na.omit(df)
+
+
+## Estandarización de variables
+### Normalización
+df2$`Escribe tu edad exacta` |> scale()
+
+data.frame(
+  original = df2$`Escribe tu edad exacta`,
+  normalizada = df2$`Escribe tu edad exacta` |> scale()
+)
+
+df3 <- df2 |> 
+  mutate(edadZ = `Escribe tu edad exacta` |> scale()) |> 
+  relocate(edadZ, .after = `Escribe tu edad exacta`)
+
+### Rango (0-1)
+df3 <- df3 |> 
+  mutate(edadR = `Escribe tu edad exacta` |> rescale()) |> 
+  relocate(edadR, .after = `Escribe tu edad exacta`)
+
+
+
+
+
+
+
 
 
 
