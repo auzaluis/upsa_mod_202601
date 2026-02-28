@@ -128,20 +128,26 @@ ifelse(
 )
 
 # Bucles (loops)
+
 ## Paso1: crear una variable que contenga los nombres
 ## de las columas a iterar
-frases <- df4 |> select(starts_with("Según tu")) |> colnames()
+frases <-
+  df4 |>
+  select(starts_with("Según tu")) |>
+  colnames()
 
-## Ejecutar el bucle
+## Paso2: Ejecutar el bucle
 df5 <- df4
 
-for (frase in frases) {
-  df5[,frase] <- ifelse(
-    test = df4[,frase] == "Un poco verdadero" | df4[,frase] == "Totalmente verdadero",
+for (col in frases) {
+  df5[,col] <- ifelse(
+    test = df5[,col] == "Un poco verdadero" | df5[,col] == "Totalmente verdadero",
     yes = 1,
     no = 0
   )
 }
+
+
 
 
 
