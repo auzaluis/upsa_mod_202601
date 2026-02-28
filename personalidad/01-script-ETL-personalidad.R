@@ -148,10 +148,54 @@ for (col in frases) {
 }
 
 
+# Tema 03: Manipulación de datos ----
+
+df5 <- df5 |> as_tibble() # Conversión a tibble
+
+## Selección de columnas
+df5 |> select(Sexo)
+df5 |> select(Sexo, `Escribe tu edad exacta`)
+df5 |> select(`Escribe tu edad exacta`:Sexo)
+df5 |> select(-`Marca temporal`)
+df5 |> select(-(`Marca temporal`:Sexo))
+df5 |> select(starts_with("edad"))
+df5 |> select(contains("edad"))
+df5 |> select(ends_with("00"))
 
 
+## Filtrado de filas
+df5 |> select(Sexo) |> filter(Sexo == "Mujer")
+df5 |> select(Sexo) |> filter(Sexo != "Mujer")
 
+df5 |>
+  select(Sexo, `Escribe tu edad exacta`) |> 
+  filter(`Escribe tu edad exacta` > 21)
 
+df5 |>
+  select(Sexo, `Escribe tu edad exacta`) |> 
+  filter(`Escribe tu edad exacta` <= 21)
+
+df5 |> 
+  select(Sexo, `Escribe tu edad exacta`) |> 
+  filter(`Escribe tu edad exacta` >= 18 & `Escribe tu edad exacta` <= 21)
+
+df5 |> 
+  select(Sexo, `Escribe tu edad exacta`) |> 
+  filter(`Escribe tu edad exacta` >= 18,
+         `Escribe tu edad exacta` <= 21)
+
+df5 |> 
+  select(Sexo, `Escribe tu edad exacta`) |> 
+  filter(between(`Escribe tu edad exacta`, 18, 21))
+
+df5 |> 
+  select(Sexo, `Escribe tu edad exacta`) |> 
+  filter(`Escribe tu edad exacta` %in% 18:21)
+
+df5 |> 
+  select(Sexo, `Escribe tu edad exacta`) |> 
+  filter(`Escribe tu edad exacta` %in% 18:21,
+         Sexo == "Hombre")
 
 
 
