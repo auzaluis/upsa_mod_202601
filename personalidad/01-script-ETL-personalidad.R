@@ -152,7 +152,7 @@ for (col in frases) {
 
 df5 <- df5 |> as_tibble() # Conversión a tibble
 
-## Selección de columnas
+## Selección de columnas ----
 df5 |> select(Sexo)
 df5 |> select(Sexo, `Escribe tu edad exacta`)
 df5 |> select(`Escribe tu edad exacta`:Sexo)
@@ -163,7 +163,7 @@ df5 |> select(contains("edad"))
 df5 |> select(ends_with("00"))
 
 
-## Filtrado de filas
+## Filtrado de filas ----
 df5 |> select(Sexo) |> filter(Sexo == "Mujer")
 df5 |> select(Sexo) |> filter(Sexo != "Mujer")
 
@@ -209,7 +209,8 @@ colnames(df6)[33:36] <- apps
 colnames(df6)[8:31] <- gsub(".*\\[(.+)\\].*", "\\1", colnames(df6)[8:31])
 
 
-## Pivotado
+## Pivotados ----
+
 df7 <- df6 |> 
   pivot_longer(
     cols = all_of(apps),
@@ -217,6 +218,14 @@ df7 <- df6 |>
     values_to = "time"
   )
 
+df8 <- df7 |> 
+  pivot_wider(
+    names_from = app,
+    values_from = time
+  )
+
+
+# Tema 04: Outliers
 
 
 
