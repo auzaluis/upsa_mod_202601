@@ -198,6 +198,27 @@ df5 |>
          Sexo == "Hombre")
 
 
+## Nombres de columnas ----
+df6 <- df5
+
+### Apps
+apps <- c("TikTok", "Instagram", "Facebook", "YouTube")
+colnames(df6)[33:36] <- apps
+
+### Frases
+colnames(df6)[8:31] <- gsub(".*\\[(.+)\\].*", "\\1", colnames(df6)[8:31])
+
+
+## Pivotado
+df7 <- df6 |> 
+  pivot_longer(
+    cols = all_of(apps),
+    names_to = "app",
+    values_to = "time"
+  )
+
+
+
 
 
 
