@@ -251,7 +251,20 @@ ggplotly(
     geom_boxplot() +
     theme_minimal() +
     labs(x = "", y = "Promedio horas/semana") +
-    facet_wrap(vars(Sexo)) +
+    theme(
+      legend.position = "none",
+      panel.grid.major.x = element_blank()
+    )
+)
+
+# Agregando la variable Sexo
+ggplotly(
+  df7 |> 
+    ggplot(aes(x = Sexo, y = time, fill = app)) +
+    geom_boxplot() +
+    theme_minimal() +
+    labs(x = "", y = "Promedio horas/semana") +
+    facet_wrap(vars(app), nrow = 1) +
     theme(
       legend.position = "none",
       panel.grid.major.x = element_blank()
@@ -259,6 +272,49 @@ ggplotly(
 )
 
 
-## 
+## Identificación / Imputación
+
+df9 <- df7 |> 
+  mutate(
+    outlier = case_when(
+      app == "Facebook"  & Sexo == "Hombre" & time > 10    ~ 1,
+      app == "Facebook"  & Sexo == "Mujer"  & time > 10    ~ 1,
+      app == "Instagram" & Sexo == "Hombre" & time > 12    ~ 1,
+      app == "Instagram" & Sexo == "Mujer"  & time > 12    ~ 1,
+      app == "TikTok"    & Sexo == "Hombre" & time > 18.27 ~ 1,
+      app == "TikTok"    & Sexo == "Mujer"  & time > 20    ~ 1,
+      app == "YouTube"   & Sexo == "Hombre" & time > 11.57 ~ 1,
+      app == "YouTube"   & Sexo == "Mujer"  & time > 5.52  ~ 1,
+      .default = 0
+    ),
+    time2 = ifelse(
+      test = outlier == 1,
+      yes  = NA,
+      no   = time
+    )
+  )
+
+
+sum(df9$outlier) / nrow(df9) # Porcentaje de outliers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
