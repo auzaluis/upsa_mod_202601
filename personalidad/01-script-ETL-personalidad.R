@@ -4,7 +4,8 @@ library(pacman)
 p_load(
   gsheet,
   tidyverse,
-  scales
+  scales,
+  plotly
 )
 
 # Tema 01: Carga de datos ----
@@ -225,11 +226,39 @@ df8 <- df7 |>
   )
 
 
-# Tema 04: Outliers
+# Tema 04: Outliers ----
+# De horas a número
+strsplit("4:30:00", split = ":")
+
+df7$time <- sapply(
+  strsplit(df7$time, split = ":"),
+  function(x) {
+    x <- as.numeric(x)
+    x[1] + x[2]/60 + x[3]/60^2
+  }
+)
+
+## Detección gráfica ----
+
+## Boxplot feo
+boxplot(df7$time)
+
+## Boxplot bonito
+
+ggplotly(
+  df7 |> 
+    ggplot(aes(x = app, y = time, fill = app)) +
+    geom_boxplot() +
+    theme_minimal() +
+    labs(x = "", y = "Promedio horas/semana") +
+    facet_wrap(vars(Sexo)) +
+    theme(
+      legend.position = "none",
+      panel.grid.major.x = element_blank()
+    )
+)
 
 
-
-
-
+## 
 
 
