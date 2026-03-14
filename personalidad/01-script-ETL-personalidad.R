@@ -315,25 +315,44 @@ write_csv(
 )
 
 # Tema 05: Aggregations
+
 ## Tabla de frecuencias
 df9 |> 
-  count(edadGR, Sexo)
+  count(edadGR, sort = T)
 
+df9 |> 
+  count(edadGR) |> 
+  arrange(desc(n)) |> 
+  mutate(
+    prop = n/sum(n),
+    pct  = scales::percent(prop)
+  )
+
+df9 |> 
+  group_by(Sexo) |> 
+  count(edadGR) |> 
+  ungroup() |>
+  mutate(
+    prop = n/sum(n),
+    pct  = scales::percent(prop)
+  )
+
+tabla_cruzada <- 
+  df9 |> 
+  group_by(app, Sexo) |> 
+  summarise(
+    n = n(),
+    promedio = mean(time),
+    promedio_suavizado = mean(time2, na.rm = T),
+    desviacion = sd(time),
+    min = min(time),
+    max = max(time)
+  ) |> 
+  ungroup()
+
+
+# Guardar tabla csv
 write_csv(
-  df9 |> count(edadGR, Sexo),
+  tabla_cruzada,
   file = "personalidad/tabla_cruzada.csv"
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
