@@ -294,16 +294,35 @@ df9 <- df7 |>
     )
   )
 
-
 sum(df9$outlier) / nrow(df9) # Porcentaje de outliers
 
+ggplotly(
+  df9 |> 
+    ggplot(aes(x = Sexo, y = time2, fill = app)) +
+    geom_boxplot() +
+    theme_minimal() +
+    labs(x = "", y = "Promedio horas/semana") +
+    facet_wrap(vars(app), nrow = 1) +
+    theme(
+      legend.position = "none",
+      panel.grid.major.x = element_blank()
+    )
+)
 
+write_csv(
+  df9 |> select(app, time, outlier, time2),
+  file = "personalidad/base_limpia.csv"
+)
 
+# Tema 05: Aggregations
+## Tabla de frecuencias
+df9 |> 
+  count(edadGR, Sexo)
 
-
-
-
-
+write_csv(
+  df9 |> count(edadGR, Sexo),
+  file = "personalidad/tabla_cruzada.csv"
+)
 
 
 
